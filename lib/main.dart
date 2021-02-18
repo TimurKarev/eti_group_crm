@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         //   surface: Colors.grey[200],
         //   background: Colors.blue[700],
         // ),
-        primaryColor: Colors.grey[400],
+        primaryColor: Colors.grey[500],
         accentColor: Colors.red[400],
 
         elevatedButtonTheme: ElevatedButtonThemeData(
