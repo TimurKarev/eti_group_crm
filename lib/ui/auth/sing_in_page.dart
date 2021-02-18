@@ -1,8 +1,14 @@
 import 'package:eti_group_crm/ui/config/custom_icon_icons.dart';
 import 'package:eti_group_crm/ui/widgets/custom_raised_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SingInPage extends StatelessWidget {
+  Future<void> _signInAnonymously() async {
+    final userCred = await FirebaseAuth.instance.signInAnonymously();
+    print('${userCred.user.uid}');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +53,7 @@ class SingInPage extends StatelessWidget {
             CustomRaisedButton(
               text: 'Войти анонимно',
               icon: CustomIcon.ghost,
-              onPressed: () {}, // TODO: add callback
+              onPressed: _signInAnonymously, // TODO: add callback
             ),
           ],
         ));
