@@ -1,12 +1,28 @@
+import 'package:eti_group_crm/services/auth.dart';
 import 'package:eti_group_crm/ui/config/custom_icon_icons.dart';
 import 'package:eti_group_crm/ui/widgets/custom_raised_button.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SingInPage extends StatelessWidget {
+
+  SingInPage({Key key, @required this.auth }) : super(key: key);
+
+  final AuthBase auth;
+
   Future<void> _signInAnonymously() async {
-    final userCred = await FirebaseAuth.instance.signInAnonymously();
-    print('${userCred.user.uid}');
+    try {
+      final user = await auth.signInAnonymously();
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> _signInWithGoogle() async {
+    try {
+      final user = await auth.signInWithGoogle();
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   @override
@@ -41,7 +57,7 @@ class SingInPage extends StatelessWidget {
             CustomRaisedButton(
               text: 'Войти через Google',
               icon: CustomIcon.google,
-              onPressed: () {}, // TODO: add callback
+              onPressed: _signInWithGoogle, // TODO: add callback
             ),
             SizedBox(height: 18.0),
             CustomRaisedButton(
