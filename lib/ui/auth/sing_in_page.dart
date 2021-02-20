@@ -1,11 +1,11 @@
 import 'package:eti_group_crm/services/auth.dart';
+import 'package:eti_group_crm/ui/auth/email_sign_in_page.dart';
 import 'package:eti_group_crm/ui/config/custom_icon_icons.dart';
 import 'package:eti_group_crm/ui/widgets/custom_raised_button.dart';
 import 'package:flutter/material.dart';
 
 class SingInPage extends StatelessWidget {
-
-  SingInPage({Key key, @required this.auth }) : super(key: key);
+  SingInPage({Key key, @required this.auth}) : super(key: key);
 
   final AuthBase auth;
 
@@ -23,6 +23,17 @@ class SingInPage extends StatelessWidget {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  void _sighInWithEmail(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        fullscreenDialog: true,
+        builder: (context) => EmailSignInPage(
+          auth: auth,
+        ),
+      ),
+    );
   }
 
   @override
@@ -51,21 +62,21 @@ class SingInPage extends StatelessWidget {
             CustomRaisedButton(
               text: 'Войти по почте',
               icon: Icons.mail,
-              onPressed: () {}, // TODO: add callback
+              onPressed: () => _sighInWithEmail(context), // TODO: add callback
             ),
             SizedBox(height: 18.0),
-            CustomRaisedButton(
-              text: 'Войти через Google',
-              icon: CustomIcon.google,
-              onPressed: _signInWithGoogle, // TODO: add callback
-            ),
-            SizedBox(height: 18.0),
-            CustomRaisedButton(
-              text: 'Войти через Apple',
-              icon: CustomIcon.apple,
-              onPressed: () {}, // TODO: add callback
-            ),
-            SizedBox(height: 40.0),
+            // CustomRaisedButton(
+            //   text: 'Войти через Google',
+            //   icon: CustomIcon.google,
+            //   onPressed: _signInWithGoogle, // TODO: add callback
+            // ),
+            // SizedBox(height: 18.0),
+            // CustomRaisedButton(
+            //   text: 'Войти через Apple',
+            //   icon: CustomIcon.apple,
+            //   onPressed: () {}, // TODO: add callback
+            // ),
+            // SizedBox(height: 40.0),
             CustomRaisedButton(
               text: 'Войти анонимно',
               icon: CustomIcon.ghost,
