@@ -1,25 +1,14 @@
-import 'package:eti_group_crm/services/auth.dart';
+import 'package:eti_group_crm/services/auth_provider.dart';
 import 'package:eti_group_crm/ui/auth/email_sign_in_page.dart';
 import 'package:eti_group_crm/ui/config/custom_icon_icons.dart';
 import 'package:eti_group_crm/ui/widgets/custom_raised_button.dart';
 import 'package:flutter/material.dart';
 
 class SingInPage extends StatelessWidget {
-  SingInPage({Key key, @required this.auth}) : super(key: key);
-
-  final AuthBase auth;
-
-  Future<void> _signInAnonymously() async {
+  Future<void> _signInAnonymously(BuildContext context) async {
     try {
+      final auth = AuthProvider.of(context);
       final user = await auth.signInAnonymously();
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
-  Future<void> _signInWithGoogle() async {
-    try {
-      final user = await auth.signInWithGoogle();
     } catch (e) {
       print(e.toString());
     }
@@ -29,9 +18,7 @@ class SingInPage extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         fullscreenDialog: true,
-        builder: (context) => EmailSignInPage(
-          auth: auth,
-        ),
+        builder: (context) => EmailSignInPage(),
       ),
     );
   }
@@ -80,7 +67,8 @@ class SingInPage extends StatelessWidget {
             CustomRaisedButton(
               text: 'Войти анонимно',
               icon: CustomIcon.ghost,
-              onPressed: _signInAnonymously, // TODO: add callback
+              onPressed: () =>
+                  _signInAnonymously(context), // TODO: add callback
             ),
           ],
         ));

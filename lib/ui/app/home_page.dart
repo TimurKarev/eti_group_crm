@@ -1,19 +1,16 @@
-import 'package:eti_group_crm/services/auth.dart';
+import 'package:eti_group_crm/services/auth_provider.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
-
-  HomePage({Key key, @required this.auth });
-
-  final AuthBase auth;
-
-  Future<void> _signOut() async {
+  Future<void> _signOut(BuildContext context) async {
     try {
+      final auth = AuthProvider.of(context);
       await auth.signOut();
     } catch (e) {
       print(e.toString());
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +18,7 @@ class HomePage extends StatelessWidget {
         title: Text('HomePage'),
         actions: <Widget>[
           FlatButton(
-            onPressed: _signOut,
+            onPressed: () => _signOut(context),
             child: Text('Logout'),
           ),
         ],
