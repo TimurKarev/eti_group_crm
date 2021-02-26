@@ -1,11 +1,12 @@
 import 'dart:io';
 
 import 'package:eti_group_crm/services/auth.dart';
-import 'package:eti_group_crm/services/auth_provider.dart';
 import 'package:eti_group_crm/services/validators.dart';
 import 'package:eti_group_crm/ui/widgets/custom_raised_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 enum EmailSignInFormType { signIn, register }
 
@@ -43,20 +44,20 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       _isLoading = true;
     });
     try {
-      final auth = AuthProvider.of(context);
+      final auth = Provider.of<AuthBase>(context, listen: false);
       if (_formType == EmailSignInFormType.signIn) {
         await auth.signInWithEmailAndPassword(_email, _password);
       } else {
         await auth.createUserWithEmailAndPassword(_email, _password);
       }
       Navigator.of(context).pop();
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
       showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
               title: Text('Ошибка входа'),
-              content: Text(e.toString()),
+              content: Text(e.message),
               actions: [
                 FlatButton(
                   child: Text('Ok'),
