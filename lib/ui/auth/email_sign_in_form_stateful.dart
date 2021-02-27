@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:eti_group_crm/models/email_sign_in_model.dart';
 import 'package:eti_group_crm/services/auth.dart';
 import 'package:eti_group_crm/services/validators.dart';
 import 'package:eti_group_crm/ui/widgets/custom_raised_button.dart';
@@ -8,14 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-enum EmailSignInFormType { signIn, register }
-
-class EmailSignInForm extends StatefulWidget with EmailAndPasswordValidators {
+class EmailSignInFormStateful extends StatefulWidget with EmailAndPasswordValidators {
   @override
-  _EmailSignInFormState createState() => _EmailSignInFormState();
+  _EmailSignInFormStatefulState createState() => _EmailSignInFormStatefulState();
 }
 
-class _EmailSignInFormState extends State<EmailSignInForm> {
+class _EmailSignInFormStatefulState extends State<EmailSignInFormStateful> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -36,41 +35,6 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         ? _passwordFocusNode
         : _emailFocusNode;
     FocusScope.of(context).requestFocus(newFocus);
-  }
-
-  void _submit() async {
-    setState(() {
-      _submitted = true;
-      _isLoading = true;
-    });
-    try {
-      final auth = Provider.of<AuthBase>(context, listen: false);
-      if (_formType == EmailSignInFormType.signIn) {
-        await auth.signInWithEmailAndPassword(_email, _password);
-      } else {
-        await auth.createUserWithEmailAndPassword(_email, _password);
-      }
-      Navigator.of(context).pop();
-    } on FirebaseAuthException catch (e) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text('Ошибка входа'),
-              content: Text(e.message),
-              actions: [
-                FlatButton(
-                  child: Text('Ok'),
-                  onPressed: () => Navigator.of(context).pop(false),
-                ),
-              ],
-            );
-          });
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
   }
 
   void _toggleFormType() {

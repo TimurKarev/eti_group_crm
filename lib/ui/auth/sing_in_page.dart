@@ -7,23 +7,27 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SingInPage extends StatelessWidget {
+  const SingInPage({Key key, @required this.bloc});
+
+  final SignInBloc bloc;
+
   static Widget create(BuildContext context) {
+    final auth = Provider.of<AuthBase>(context, listen: false);
     return Provider<SignInBloc>(
-      create: (_) => SignInBloc(),
-      child: SingInPage(),
+      create: (_) => SignInBloc(auth: auth),
+      dispose: (_, bloc) => bloc.dispose(),
+      child: Consumer<SignInBloc>(
+          builder: (_, bloc, __) => SingInPage(
+                bloc: bloc,
+              )),
     );
   }
 
   Future<void> _signInAnonymously(BuildContext context) async {
-    final bloc = Provider.of<SignInBloc>(context, listen: false);
     try {
-      bloc.setIsLoading(true);
-      final auth = Provider.of<AuthBase>(context, listen: false);
-      await auth.signInAnonymously();
+      await bloc.signInAnonymously();
     } catch (e) {
       print(e.toString());
-    } finally {
-      bloc.setIsLoading(false);
     }
   }
 
@@ -38,7 +42,6 @@ class SingInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<SignInBloc>(context, listen: false);
     return Scaffold(
         appBar: AppBar(
           title: Text('ЭТИ Групп'),
@@ -82,17 +85,14 @@ class SingInPage extends StatelessWidget {
 
   Widget _buildHeader(BuildContext context, bool isLoading) {
     if (isLoading) {
-     return Center(
-       child: CircularProgressIndicator(),
-     );
+      return Center(
+        child: CircularProgressIndicator(),
+      );
     } else {
       return Text(
         'Вход на сайт',
         textAlign: TextAlign.center,
-        style: Theme
-            .of(context)
-            .textTheme
-            .headline3,
+        style: Theme.of(context).textTheme.headline3,
       );
     }
   }

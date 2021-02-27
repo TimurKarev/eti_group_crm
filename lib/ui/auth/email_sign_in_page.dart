@@ -1,7 +1,5 @@
-import 'package:eti_group_crm/services/auth.dart';
+import 'package:eti_group_crm/ui/auth/email_sing_in_bloc_based.dart';
 import 'package:flutter/material.dart';
-
-import 'email_sign_in_form.dart';
 
 class EmailSignInPage extends StatelessWidget {
   @override
@@ -16,7 +14,7 @@ class EmailSignInPage extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Card(
             elevation: 3.0,
-            child: EmailSignInForm(),
+            child: EmailSignInFormBlocBased.create(context),
           ),
         ),
       ),
